@@ -141,28 +141,16 @@ func (o *AccountEventType) IsAccountCreated() bool {
     return o == _accountEventTypes.AccountCreated()
 }
 
-func (o *AccountEventType) IsAccountUpdated() bool {
-    return o == _accountEventTypes.AccountUpdated()
-}
-
 func (o *AccountEventType) IsAccountDeleted() bool {
     return o == _accountEventTypes.AccountDeleted()
-}
-
-func (o *AccountEventType) IsAccountEnabled() bool {
-    return o == _accountEventTypes.AccountEnabled()
 }
 
 func (o *AccountEventType) IsAccountDisabled() bool {
     return o == _accountEventTypes.AccountDisabled()
 }
 
-func (o *AccountEventType) IsSendEnabledAccountConfirmationed() bool {
-    return o == _accountEventTypes.SendEnabledAccountConfirmationed()
-}
-
-func (o *AccountEventType) IsSendDisabledAccountConfirmationed() bool {
-    return o == _accountEventTypes.SendDisabledAccountConfirmationed()
+func (o *AccountEventType) IsAccountEnabled() bool {
+    return o == _accountEventTypes.AccountEnabled()
 }
 
 func (o *AccountEventType) IsAccountLogged() bool {
@@ -173,6 +161,18 @@ func (o *AccountEventType) IsSendCreatedAccountConfirmationed() bool {
     return o == _accountEventTypes.SendCreatedAccountConfirmationed()
 }
 
+func (o *AccountEventType) IsSendDisabledAccountConfirmationed() bool {
+    return o == _accountEventTypes.SendDisabledAccountConfirmationed()
+}
+
+func (o *AccountEventType) IsSendEnabledAccountConfirmationed() bool {
+    return o == _accountEventTypes.SendEnabledAccountConfirmationed()
+}
+
+func (o *AccountEventType) IsAccountUpdated() bool {
+    return o == _accountEventTypes.AccountUpdated()
+}
+
 type accountEventTypes struct {
 	values []*AccountEventType
     literals []enum.Literal
@@ -180,14 +180,14 @@ type accountEventTypes struct {
 
 var _accountEventTypes = &accountEventTypes{values: []*AccountEventType{
     {name: "AccountCreated", ordinal: 0},
-    {name: "AccountUpdated", ordinal: 1},
-    {name: "AccountDeleted", ordinal: 2},
+    {name: "AccountDeleted", ordinal: 1},
+    {name: "AccountDisabled", ordinal: 2},
     {name: "AccountEnabled", ordinal: 3},
-    {name: "AccountDisabled", ordinal: 4},
-    {name: "SendEnabledAccountConfirmationed", ordinal: 5},
+    {name: "AccountLogged", ordinal: 4},
+    {name: "SendCreatedAccountConfirmationed", ordinal: 5},
     {name: "SendDisabledAccountConfirmationed", ordinal: 6},
-    {name: "AccountLogged", ordinal: 7},
-    {name: "SendCreatedAccountConfirmationed", ordinal: 8}},
+    {name: "SendEnabledAccountConfirmationed", ordinal: 7},
+    {name: "AccountUpdated", ordinal: 8}},
 }
 
 func AccountEventTypes() *accountEventTypes {
@@ -212,11 +212,11 @@ func (o *accountEventTypes) AccountCreated() *AccountEventType {
     return _accountEventTypes.values[0]
 }
 
-func (o *accountEventTypes) AccountUpdated() *AccountEventType {
+func (o *accountEventTypes) AccountDeleted() *AccountEventType {
     return _accountEventTypes.values[1]
 }
 
-func (o *accountEventTypes) AccountDeleted() *AccountEventType {
+func (o *accountEventTypes) AccountDisabled() *AccountEventType {
     return _accountEventTypes.values[2]
 }
 
@@ -224,11 +224,11 @@ func (o *accountEventTypes) AccountEnabled() *AccountEventType {
     return _accountEventTypes.values[3]
 }
 
-func (o *accountEventTypes) AccountDisabled() *AccountEventType {
+func (o *accountEventTypes) AccountLogged() *AccountEventType {
     return _accountEventTypes.values[4]
 }
 
-func (o *accountEventTypes) SendEnabledAccountConfirmationed() *AccountEventType {
+func (o *accountEventTypes) SendCreatedAccountConfirmationed() *AccountEventType {
     return _accountEventTypes.values[5]
 }
 
@@ -236,11 +236,11 @@ func (o *accountEventTypes) SendDisabledAccountConfirmationed() *AccountEventTyp
     return _accountEventTypes.values[6]
 }
 
-func (o *accountEventTypes) AccountLogged() *AccountEventType {
+func (o *accountEventTypes) SendEnabledAccountConfirmationed() *AccountEventType {
     return _accountEventTypes.values[7]
 }
 
-func (o *accountEventTypes) SendCreatedAccountConfirmationed() *AccountEventType {
+func (o *accountEventTypes) AccountUpdated() *AccountEventType {
     return _accountEventTypes.values[8]
 }
 

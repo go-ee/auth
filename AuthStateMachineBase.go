@@ -7,6 +7,7 @@ import (
     "github.com/looplab/eventhorizon"
 )
 type AccountConfirmationDisabledHandler struct {
+    EnabledHandler func (*AccountEnabled, *Account) (err error)  `json:"enabledHandler" eh:"optional"`
 }
 
 func NewAccountConfirmationDisabledHandler() (ret *AccountConfirmationDisabledHandler) {
@@ -51,6 +52,7 @@ func NewAccountConfirmationDisabledExecutor() (ret *AccountConfirmationDisabledE
 
 
 type AccountConfirmationEnabledHandler struct {
+    DisabledHandler func (*AccountDisabled, *Account) (err error)  `json:"disabledHandler" eh:"optional"`
 }
 
 func NewAccountConfirmationEnabledHandler() (ret *AccountConfirmationEnabledHandler) {
@@ -95,6 +97,7 @@ func NewAccountConfirmationEnabledExecutor() (ret *AccountConfirmationEnabledExe
 
 
 type AccountConfirmationInitialHandler struct {
+    CreatedHandler func (*AccountCreated, *Account) (err error)  `json:"createdHandler" eh:"optional"`
 }
 
 func NewAccountConfirmationInitialHandler() (ret *AccountConfirmationInitialHandler) {
@@ -104,8 +107,6 @@ func NewAccountConfirmationInitialHandler() (ret *AccountConfirmationInitialHand
 
 func (o *AccountConfirmationInitialHandler) Apply(event eventhorizon.Event, entity eventhorizon.Entity) (err error) {
     switch event.EventType() {
-    case AccountCreatedEvent:
-        err = o.CreatedHandler(event.Data().(*AccountCreated), entity.(*Account))
     case AccountCreatedEvent:
         err = o.CreatedHandler(event.Data().(*AccountCreated), entity.(*Account))
     default:
@@ -230,6 +231,7 @@ func NewAccountDeletedExecutor() (ret *AccountDeletedExecutor) {
 
 
 type AccountDisabledHandler struct {
+    EnabledHandler func (*AccountEnabled, *Account) (err error)  `json:"enabledHandler" eh:"optional"`
 }
 
 func NewAccountDisabledHandler() (ret *AccountDisabledHandler) {
@@ -274,6 +276,7 @@ func NewAccountDisabledExecutor() (ret *AccountDisabledExecutor) {
 
 
 type AccountEnabledHandler struct {
+    DisabledHandler func (*AccountDisabled, *Account) (err error)  `json:"disabledHandler" eh:"optional"`
 }
 
 func NewAccountEnabledHandler() (ret *AccountEnabledHandler) {
@@ -318,6 +321,8 @@ func NewAccountEnabledExecutor() (ret *AccountEnabledExecutor) {
 
 
 type AccountExistHandler struct {
+    DeletedHandler func (*AccountDeleted, *Account) (err error)  `json:"deletedHandler" eh:"optional"`
+    UpdatedHandler func (*AccountUpdated, *Account) (err error)  `json:"updatedHandler" eh:"optional"`
 }
 
 func NewAccountExistHandler() (ret *AccountExistHandler) {
@@ -327,10 +332,10 @@ func NewAccountExistHandler() (ret *AccountExistHandler) {
 
 func (o *AccountExistHandler) Apply(event eventhorizon.Event, entity eventhorizon.Entity) (err error) {
     switch event.EventType() {
-    case AccountUpdatedEvent:
-        err = o.UpdatedHandler(event.Data().(*AccountUpdated), entity.(*Account))
     case AccountDeletedEvent:
         err = o.DeletedHandler(event.Data().(*AccountDeleted), entity.(*Account))
+    case AccountUpdatedEvent:
+        err = o.UpdatedHandler(event.Data().(*AccountUpdated), entity.(*Account))
     default:
 		err = errors.New(fmt.Sprintf("Not supported event type '%v' for entity '%v", event.EventType(), entity))
 	}
@@ -382,6 +387,7 @@ func NewAccountExistExecutor() (ret *AccountExistExecutor) {
 
 
 type AccountInitialHandler struct {
+    CreatedHandler func (*AccountCreated, *Account) (err error)  `json:"createdHandler" eh:"optional"`
 }
 
 func NewAccountInitialHandler() (ret *AccountInitialHandler) {
@@ -391,8 +397,6 @@ func NewAccountInitialHandler() (ret *AccountInitialHandler) {
 
 func (o *AccountInitialHandler) Apply(event eventhorizon.Event, entity eventhorizon.Entity) (err error) {
     switch event.EventType() {
-    case AccountCreatedEvent:
-        err = o.CreatedHandler(event.Data().(*AccountCreated), entity.(*Account))
     case AccountCreatedEvent:
         err = o.CreatedHandler(event.Data().(*AccountCreated), entity.(*Account))
     default:
