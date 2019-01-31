@@ -134,24 +134,6 @@ func (o *AccountConfirmationInitialHandler) SetupEventHandler() (err error) {
         }
         return
     }
-
-    //register event object factory
-    eventhorizon.RegisterEventData(AccountCreatedEvent, func() eventhorizon.EventData {
-		return &AccountCreated{}
-	})
-
-    //default handler implementation
-    o.CreatedHandler = func(event *AccountCreated, entity *Account) (err error) {
-        if err = eh.ValidateNewId(entity.Id, event.Id, AccountAggregateType); err == nil {
-            entity.Name = event.Name
-            entity.Username = event.Username
-            entity.Password = event.Password
-            entity.Email = event.Email
-            entity.Roles = event.Roles
-            entity.Id = event.Id
-        }
-        return
-    }
     return
 }
 
@@ -345,6 +327,19 @@ func (o *AccountExistHandler) Apply(event eventhorizon.Event, entity eventhorizo
 func (o *AccountExistHandler) SetupEventHandler() (err error) {
 
     //register event object factory
+    eventhorizon.RegisterEventData(AccountDeletedEvent, func() eventhorizon.EventData {
+		return &AccountDeleted{}
+	})
+
+    //default handler implementation
+    o.DeletedHandler = func(event *AccountDeleted, entity *Account) (err error) {
+        if err = eh.ValidateIdsMatch(entity.Id, event.Id, AccountAggregateType); err == nil {
+            *entity = *NewAccount()
+        }
+        return
+    }
+
+    //register event object factory
     eventhorizon.RegisterEventData(AccountUpdatedEvent, func() eventhorizon.EventData {
 		return &AccountUpdated{}
 	})
@@ -357,19 +352,6 @@ func (o *AccountExistHandler) SetupEventHandler() (err error) {
             entity.Password = event.Password
             entity.Email = event.Email
             entity.Roles = event.Roles
-        }
-        return
-    }
-
-    //register event object factory
-    eventhorizon.RegisterEventData(AccountDeletedEvent, func() eventhorizon.EventData {
-		return &AccountDeleted{}
-	})
-
-    //default handler implementation
-    o.DeletedHandler = func(event *AccountDeleted, entity *Account) (err error) {
-        if err = eh.ValidateIdsMatch(entity.Id, event.Id, AccountAggregateType); err == nil {
-            *entity = *NewAccount()
         }
         return
     }
@@ -406,24 +388,6 @@ func (o *AccountInitialHandler) Apply(event eventhorizon.Event, entity eventhori
 }
 
 func (o *AccountInitialHandler) SetupEventHandler() (err error) {
-
-    //register event object factory
-    eventhorizon.RegisterEventData(AccountCreatedEvent, func() eventhorizon.EventData {
-		return &AccountCreated{}
-	})
-
-    //default handler implementation
-    o.CreatedHandler = func(event *AccountCreated, entity *Account) (err error) {
-        if err = eh.ValidateNewId(entity.Id, event.Id, AccountAggregateType); err == nil {
-            entity.Name = event.Name
-            entity.Username = event.Username
-            entity.Password = event.Password
-            entity.Email = event.Email
-            entity.Roles = event.Roles
-            entity.Id = event.Id
-        }
-        return
-    }
 
     //register event object factory
     eventhorizon.RegisterEventData(AccountCreatedEvent, func() eventhorizon.EventData {
