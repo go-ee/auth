@@ -8,7 +8,7 @@ import (
 	"github.com/go-ee/utils/crypt"
 	"github.com/go-ee/utils/eh/app"
 	"github.com/go-ee/utils/net"
-	"github.com/looplab/eventhorizon"
+	"github.com/google/uuid"
 )
 
 type Auth struct {
@@ -41,7 +41,8 @@ func (o *Auth) initJwtController(accounts *auth.AccountQueryRepository) (ret *ne
 	return net.NewJwtControllerApp("app",
 		func(credentials net.UserCredentials) (ret interface{}, err error) {
 			var account *auth.Account
-			if account, err = accounts.FindById(uuid.Parse(credentials.Username)); err == nil {
+			id, _ := uuid.Parse(credentials.Username)
+			if account, err = accounts.FindById(id); err == nil {
 				if !crypt.HashAndEquals(credentials.Password, account.Password) {
 					err = errors.New("password mismatch")
 				} else {
