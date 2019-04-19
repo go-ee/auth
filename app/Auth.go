@@ -41,7 +41,7 @@ func (o *Auth) initJwtController(accounts *auth.AccountQueryRepository) (ret *ne
 	return net.NewJwtControllerApp("app",
 		func(credentials net.UserCredentials) (ret interface{}, err error) {
 			var account *auth.Account
-			if account, err = accounts.FindById(eventhorizon.UUID(credentials.Username)); err == nil {
+			if account, err = accounts.FindById(uuid.Parse(credentials.Username)); err == nil {
 				if !crypt.HashAndEquals(credentials.Password, account.Password) {
 					err = errors.New("password mismatch")
 				} else {
