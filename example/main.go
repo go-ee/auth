@@ -23,12 +23,12 @@ func main() {
 	runner.Usage = name
 	runner.Version = "1.0"
 	runner.Flags = []cli.Flag{
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:  "name, n",
 			Usage: "name of the scool, used for backend data",
 			Value: "Auth",
 		},
-		cli.BoolFlag{
+		&cli.BoolFlag{
 			Name:  "secure, s",
 			Usage: "activate secure mode",
 		},
@@ -40,14 +40,14 @@ func main() {
 			Name:  "mongo",
 			Usage: "Start server with MongoDB backend",
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				&cli.StringFlag{
 					Name:  flag_url,
 					Usage: "url of the MongoDB instance",
 					Value: "localhost",
 				},
 			},
 			Action: func(c *cli.Context) (err error) {
-				Auth := app.NewAuth(mongo.NewAppMongo(name, c.GlobalString(flag_name), c.GlobalBool(flag_secure), c.String(flag_url)))
+				Auth := app.NewAuth(mongo.NewAppMongo(name, c.String(flag_name), c.Bool(flag_secure), c.String(flag_url)))
 				Auth.Start()
 				return
 			},
@@ -55,7 +55,7 @@ func main() {
 			Name:  "memory",
 			Usage: "Start server with memory backend",
 			Action: func(c *cli.Context) (err error) {
-				Auth := app.NewAuth(memory.NewAppMemory(name, c.GlobalString(flag_name), c.GlobalBool(flag_secure)))
+				Auth := app.NewAuth(memory.NewAppMemory(name, c.String(flag_name), c.Bool(flag_secure)))
 				Auth.Start()
 				return
 			},
